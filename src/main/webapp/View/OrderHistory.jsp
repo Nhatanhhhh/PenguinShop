@@ -37,6 +37,7 @@
             </thead>
             <tbody>
                 <% for (Order order : orders) { %>
+
                 <tr>
                     <td><%= order.getOrderID() %></td>
                     <td><%= order.getOrderDate() %></td>
@@ -54,4 +55,5 @@
             <%@include file="/Assets/CSS/bootstrap.js.jsp"%>
         </script>
     </body>
+
 </html>
