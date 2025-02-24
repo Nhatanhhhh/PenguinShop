@@ -6,8 +6,6 @@ package DAOs;
 
 import DB.DBContext;
 import Models.Customer;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -32,10 +30,10 @@ public class CustomerDAO {
      */
     public Customer getCustomerByUsernameAndPassword(String username, String hashedPassword) {
         Customer customer = null;
-        
+
         String query = "SELECT * FROM Customer WHERE customerName = ? AND password = ?";
         Object[] params = {username, hashedPassword};
-        
+
         try ( ResultSet rs = dbContext.execSelectQuery(query, params)) {
             if (rs.next()) {
                 customer = new Customer(

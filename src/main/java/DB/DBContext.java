@@ -27,7 +27,7 @@ public class DBContext {
             try {
                 String user = "nhatanh";
                 String pass = "123";
-                String url = "jdbc:sqlserver://localhost:1433;databaseName=PenguinDB;encrypt=false";
+                String url = "jdbc:sqlserver://localhost:1433;databaseName=EbookApp;encrypt=false";
 
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
                 conn = DriverManager.getConnection(url, user, pass);
@@ -90,5 +90,4 @@ public class DBContext {
         }
         return hashedPassword;
     }
-
 }

@@ -40,7 +40,7 @@ public class Customer {
         this.state = state;
         this.isVerified = isVerified;
     }
-    
+
     public String getCustomerID() {
         return customerID;
     }
@@ -141,4 +141,5 @@ public class Customer {
     public String toString() {
         return "Customer{" + "customerID=" + customerID + ", userName=" + userName + ", passWord=" + passWord + ", fullName=" + fullName + ", email=" + email + ", googleID=" + googleID + ", accessToken=" + accessToken + ", address=" + address + ", phoneNumber=" + phoneNumber + ", zip=" + zip + ", state=" + state + ", isVerified=" + isVerified + '}';
     }
+    
 }
