@@ -31,6 +31,13 @@ public class Product {
     public Product() {
     }
 
+    public Product(int id, String name, double price) {
+    this.productID = productID;
+    this.productName = productName;
+    this.price = price;
+}
+
+
     public String getProductID() {
         return productID;
     }

@@ -45,19 +45,23 @@ public class Checkout extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        int customerId = (int) session.getAttribute("customerId"); // Lấy ID người dùng từ session
+        String customerIDStr = (String) session.getAttribute("customerID");
+        if (customerIDStr == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+        int customerId = Integer.parseInt(customerIDStr);
 
         CheckoutDAO checkoutDAO = new CheckoutDAO();
 
         // Lấy thông tin khách hàng
         Customer customer = checkoutDAO.getCustomerInfo(customerId);
 
-
         // Lấy danh sách sản phẩm trong giỏ hàng
         List<Cart> cartItems = checkoutDAO.getCartItems(customerId);
 
         // Tính tổng giá trị đơn hàng
-        double subtotal = checkoutDAO.calculateSubtotal(cartItems);
+        double subtotal = checkoutDAO.calculateSubtotal(customerId);
         double shippingFee = 10.0;
         double total = subtotal + shippingFee;
 
@@ -71,19 +75,19 @@ public class Checkout extends HttpServlet {
         request.getRequestDispatcher("Checkout.jsp").forward(request, response);
     }
 
-
-@Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override
-public String getServletInfo() {
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 

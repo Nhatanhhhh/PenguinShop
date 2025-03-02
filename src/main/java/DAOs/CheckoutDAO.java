@@ -26,17 +26,23 @@ public class CheckoutDAO {
 
     public Customer getCustomerInfo(int customerId) {
         Customer customer = null;
-        String sql = "SELECT id, fullName, email, address, zip, state FROM Customer WHERE id = ?";
+        String sql = "SELECT customerID, fullName, email, address, zip, state FROM Customer WHERE id = ?";
 
         try ( ResultSet rs = dbContext.execSelectQuery(sql, new Object[]{customerId})) {
             if (rs.next()) {
                 customer = new Customer(
-                        rs.getInt("id"),
+                        rs.getString("customerID"), // Đổi từ rs.getInt() sang rs.getString() nếu customerID là String
+                        rs.getString("userName"),
+                        rs.getString("passWord"),
                         rs.getString("fullName"),
                         rs.getString("email"),
+                        rs.getString("googleID"),
+                        rs.getString("accessToken"),
                         rs.getString("address"),
+                        rs.getInt("phoneNumber"), // Đảm bảo phoneNumber trong database là kiểu số
                         rs.getString("zip"),
-                        rs.getString("state")
+                        rs.getString("state"),
+                        rs.getBoolean("isVerified") // Nếu cột này là boolean trong DB
                 );
             }
         } catch (SQLException e) {
@@ -47,13 +53,18 @@ public class CheckoutDAO {
 
     public List<Cart> getCartItems(int customerId) {
         List<Cart> cartItems = new ArrayList<>();
-        String sql = "SELECT id, quantity, productID FROM Cart WHERE customerID = ?";
+        String sql = "SELECT cartID, customerID, proVariantID, productID, quantity FROM Cart WHERE customerID = ?";
 
         try ( ResultSet rs = dbContext.execSelectQuery(sql, new Object[]{customerId})) {
             while (rs.next()) {
                 int productID = rs.getInt("productID");
-                Product product = getProductDetails(productID); // Gọi hàm riêng
-                cartItems.add(new Cart(rs.getInt("id"), rs.getInt("quantity"), product));
+                Product product = getProductDetails(productID);
+                cartItems.add(new Cart(
+                        rs.getInt("cartID"),
+                        rs.getInt("customerID"),
+                        rs.getInt("proVariantID"),
+                        productID,
+                        rs.getInt("quantity")));
             }
         } catch (SQLException e) {
             Logger.getLogger(CheckoutDAO.class.getName()).log(Level.SEVERE, null, e);
@@ -62,10 +73,13 @@ public class CheckoutDAO {
     }
 
     private Product getProductDetails(int productID) {
-        String sql = "SELECT productName, price FROM Product WHERE id = ?";
+        String sql = "SELECT id, productName, price FROM Product WHERE id = ?";
         try ( ResultSet rs = dbContext.execSelectQuery(sql, new Object[]{productID})) {
             if (rs.next()) {
-                return new Product(rs.getString("productName"), rs.getDouble("price"));
+                return new Product(
+                        rs.getInt("productID"),
+                        rs.getString("productName"),
+                        rs.getDouble("price"));
             }
         } catch (SQLException e) {
             Logger.getLogger(CheckoutDAO.class.getName()).log(Level.SEVERE, null, e);
@@ -73,11 +87,17 @@ public class CheckoutDAO {
         return null;
     }
 
-    public double calculateSubtotal(List<Cart> cartItems) {
-        double subtotal = 0;
-        for (Cart cart : cartItems) {
-            subtotal += cart.getQuantity() * cart.getProduct().getPrice();
+    public double calculateSubtotal(int customerId) {
+        double subtotal = 0.0;
+        List<Cart> cartItems = getCartItems(customerId);
+
+        for (Cart cartItem : cartItems) {
+            Product product = getProductDetails(cartItem.getProductID());
+            if (product != null) {
+                subtotal += product.getPrice() * cartItem.getQuantity();
+            }
         }
         return subtotal;
     }
+
 }

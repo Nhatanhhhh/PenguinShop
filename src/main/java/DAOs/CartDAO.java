@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DAOs;
 
 import DB.DBContext;
@@ -24,6 +20,7 @@ import java.util.logging.Logger;
 public class CartDAO {
 
     private DBContext db = new DBContext();
+
 
     public List<CartItem> viewCart(int customerID) {
         List<CartItem> cartItems = new ArrayList<>();
