@@ -106,35 +106,6 @@
                 xhr.send('action=delete&cartItemId=' + cartItemId);
             }
         }
-        function toggleCheckboxes() {
-            var pickupCheckbox = document.getElementById('pickup');
-            var addressInput = document.getElementById('address');
-            var shippingFeeElement = document.getElementById('shippingFee');
-            var totalElement = document.getElementById('totalPrice');
-            var totalElementTemp = document.getElementById('totalPriceTemp');
-            var originalTotal = parseInt(totalElement.textContent.replace(/[^\d]/g, ''), 10);
-            if (pickupCheckbox.checked) {
-                addressInput.disabled = true;
-                if (shippingFeeElement.textContent === "20,000 đ") {
-                    totalElement.textContent = (originalTotal - 20000).toLocaleString() + " đ";
-                    totalElementTemp.value = (originalTotal - 20000);
-                }
-                shippingFeeElement.textContent = "0 đ";
-            } else {
-                addressInput.disabled = false;
-                if (shippingFeeElement.textContent === "0 đ") {
-                    totalElement.textContent = (originalTotal + 20000).toLocaleString() + " đ";
-                    totalElementTemp.value = (originalTotal + 20000);
-                }
-                shippingFeeElement.textContent = "20,000 đ"; // Phí giao hàng mặc định
-            }
-        }
-        window.onload = function () {
-            var pickupCheckbox = document.getElementById('pickup');
-            var usePointsCheckbox = document.getElementById('usePoints');
-            usePointsCheckbox.checked = true;
-            pickupCheckbox.checked = false;
-            toggleCheckboxes();
-        };
+       
     </script>
 </html>
