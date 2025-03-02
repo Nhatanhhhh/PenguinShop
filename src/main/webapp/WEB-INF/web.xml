@@ -36,6 +36,14 @@
         <servlet-name>CartController</servlet-name>
         <servlet-class>Controller.CartController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Payment</servlet-name>
+        <servlet-class>Controller.Payment</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Checkout</servlet-name>
+        <servlet-class>Controller.Checkout</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>OrderHistory</servlet-name>
         <url-pattern>/OrderHistory</url-pattern>
@@ -74,6 +82,14 @@
     <servlet-mapping>
         <servlet-name>CartController</servlet-name>
         <url-pattern>/Cart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Payment</servlet-name>
+        <url-pattern>/Payment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Checkout</servlet-name>
+        <url-pattern>/Checkout</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
